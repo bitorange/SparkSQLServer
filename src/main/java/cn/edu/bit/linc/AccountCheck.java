@@ -24,9 +24,9 @@ public class AccountCheck {
 
         //如果用户名密码格式正确，则扫描判断。
         String checkSql = "select username,password from user";
-
+        ConnectJDBC conn = new ConnectJDBC();
         //执行SQL语句
-        ResultSet rs = ConnectJDBC.getAndExucuteSQL(checkSql);
+        ResultSet rs = conn.getAndExucuteSQL(checkSql);
 
         //设置标签flag，默认不存在（false）
         Boolean flag =false;

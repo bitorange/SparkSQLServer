@@ -27,16 +27,18 @@ public class JerseyServer {
 
 
         String response=null;
+        String  newSqlString = null;
         try {
-            String  newSqlString = java.net.URLDecoder.decode(sqlstring,   "utf-8");
+            newSqlString = java.net.URLDecoder.decode(sqlstring,   "utf-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        String  newSqlString = sqlstring.replace("+"," ");
-        System.out.println(newSqlString);
+        // String  newSqlString = sqlstring.replace("+"," ");
+        // System.out.println(newSqlString);
+        ConnectJDBC conn = new ConnectJDBC();
         ResultSet rs=null;
         try {
-            rs =  ConnectJDBC.getAndExucuteSQL(newSqlString);
+            rs = conn.getAndExucuteSQL(newSqlString);
         }catch (Exception e){
 
             return Response.status(200).entity(e.getMessage().toString()).build();
@@ -45,7 +47,7 @@ public class JerseyServer {
 
         JSONObject jsonObject;
         try {
-            jsonObject = ConnectJDBC.transformToJsonArray(rs);
+            jsonObject = conn.transformToJsonArray(rs);
             response=jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();

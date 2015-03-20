@@ -16,21 +16,20 @@ import java.sql.*;
 public class ConnectJDBC {
 
 
-    static String     msg;
-    static  int       code;
+     private String msg;
+     private int code;
 
     /**
      * the method include register driver,get connection and execute sql, then return resultset
-     * @param sql
+     *@param sql
      *@return resultset the Resultset of execute sql command
-     * */
-    public static ResultSet getAndExucuteSQL(String sql){
+     **/
+    public  ResultSet getAndExucuteSQL(String sql){
         Connection conn = null;
         Statement stmt = null;
         ResultSet  rs = null;
-        PreparedStatement pstmt = null;
         try {
-            //注册获得连接getconnection
+            // 注册获得连接 getconnection
             conn = JDBCUtils.getConnection();
             System.out.println("creating statement...");
             stmt = conn.createStatement();
@@ -43,10 +42,11 @@ public class ConnectJDBC {
         try {
             rs = stmt.executeQuery(sql);
         } catch (SQLException e) {
+            msg = "";
             //只取错误信息的后面一段,把冒号分割的第一段省略
             String msgArray[] = e.getMessage().split(":");
-            for(int i = 1; i <=msgArray.length-1;i++){
-                msg+=msgArray[i];
+            for(int i = 1; i <= msgArray.length - 1; i++){
+                msg += msgArray[i];
             }
             code = 1 ;
         }finally {
@@ -61,7 +61,7 @@ public class ConnectJDBC {
      * @param rs  the resultset
      * @return JSONArray
      * */
-    public static JSONObject transformToJsonArray(ResultSet rs) throws JSONException {
+    public  JSONObject transformToJsonArray(ResultSet rs) throws JSONException {
 
         //建立jsonArray数组封装所有的resultset信息
         JSONArray array = new JSONArray();
@@ -101,7 +101,7 @@ public class ConnectJDBC {
             wholeJsonObj.put("code",code).put("msg",msg);
             //这里将result,time,code,msg,size数据封装进wholeArray
         else
-            msg = "执行成功";
+            msg = "success";
         wholeJsonObj.put("result", array).put("time","20s").put("size","2M").put("code",code).put("msg",msg);
         return wholeJsonObj;
     }

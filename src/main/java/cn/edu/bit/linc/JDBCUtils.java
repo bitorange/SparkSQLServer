@@ -43,8 +43,8 @@ public class JDBCUtils {
      * */
     public static void loadDriver() {
         try {
+            System.out.println("registering driver");
             Class.forName(driverClass);
-            System.out.println("registered driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             System.out.println("some problems with the driver");
@@ -60,8 +60,8 @@ public class JDBCUtils {
         loadDriver();
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url,username,password);
-            System.out.println("geted connection");
+            System.out.println("getting connection");
+            conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
