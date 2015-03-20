@@ -95,7 +95,7 @@ public class ConnectJDBC {
             }
         }
         //wholeJsonObj用于存放最终返回数据
-        wholeJsonObj = new JSONObject();
+        wholeJsonObj = new  JSONObject();
         //code为0则正常输出，为10000则异常输出
         if(code == 1)
             wholeJsonObj.put("code",code).put("msg",msg);

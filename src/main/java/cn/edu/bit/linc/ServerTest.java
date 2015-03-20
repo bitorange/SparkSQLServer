@@ -11,6 +11,7 @@ import java.sql.ResultSet;
  */
 public class ServerTest {
         public static void main(String args[]){
+            /*
             String username = "fujigao";
             String password = "1234567899";
             String result =  AccountCheck.checkAccount(username,password);
@@ -27,5 +28,6 @@ public class ServerTest {
             }finally{
                 JDBCUtils.releaseAll();
             }
+            */
         }
 }

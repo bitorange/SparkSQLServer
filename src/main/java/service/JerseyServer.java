@@ -45,7 +45,7 @@ public class JerseyServer {
 
         JSONObject jsonObject;
         try {
-            jsonObject = ConnectJDBC.transformToJsonObject(rs);
+            jsonObject = ConnectJDBC.transformToJsonArray(rs);
             response=jsonObject.toString();
         } catch (JSONException e) {
             e.printStackTrace();
