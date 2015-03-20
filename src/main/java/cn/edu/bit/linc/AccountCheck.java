@@ -12,24 +12,24 @@ import java.sql.SQLException;
  * Created by admin on 2015/3/18.
  */
 public class AccountCheck {
-
     public static String checkAccount(String username,String password){
-        String result="";
+        String result = "";
 
-        //先判断用户名密码错误情况
-        if(username=="" || password=="" ){
-         System.out.println("please enter valid username or password");
-         return "请输入有效账号与密码";
+        // 先判断用户名密码错误情况
+        if(username == "" || password == ""){
+            System.out.println("Please enter valid username or password");
+            return "请输入有效账号与密码";
         }
 
-        //如果用户名密码格式正确，则扫描判断。
-        String checkSql = "select username,password from user";
+        // 如果用户名密码格式正确，则扫描判断。
+        String checkSql = "select username, password from user";
         ConnectJDBC conn = new ConnectJDBC();
-        //执行SQL语句
+
+        // 执行SQL语句
         ResultSet rs = conn.getAndExucuteSQL(checkSql);
 
-        //设置标签flag，默认不存在（false）
-        Boolean flag =false;
+        // 设置标签 flag，默认不存在（false）
+        Boolean flag = false;
         try {
             while(rs.next()){
                 if(username.equals(rs.getString("username")) && password.equals(rs.getString("password"))) {
@@ -37,11 +37,13 @@ public class AccountCheck {
                     break;
                 }
             }
-            //根据flag判断
-            if(flag == true)
-                result="登入成功";
-            else
+            // 根据flag判断
+            if(flag == true) {
+                result = "登入成功";
+            }
+            else {
                 result = "账号不存在";
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }finally{
