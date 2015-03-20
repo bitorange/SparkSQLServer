@@ -25,7 +25,6 @@ public class JerseyServer {
     @Path("/{sql}")
     public Response helloWorld(@PathParam("sql") String sqlstring) {
 
-
         String response=null;
         String  newSqlString = null;
         try {
@@ -33,8 +32,8 @@ public class JerseyServer {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        // String  newSqlString = sqlstring.replace("+"," ");
-        // System.out.println(newSqlString);
+
+        System.out.println(newSqlString);
         ConnectJDBC conn = new ConnectJDBC();
         ResultSet rs=null;
         try {
@@ -43,7 +42,6 @@ public class JerseyServer {
 
             return Response.status(200).entity(e.getMessage().toString()).build();
         }
-
 
         JSONObject jsonObject;
         try {

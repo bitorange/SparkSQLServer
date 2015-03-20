@@ -27,20 +27,21 @@ public class ConnectJDBC {
     public  ResultSet getAndExucuteSQL(String sql){
         Connection conn = null;
         Statement stmt = null;
-        ResultSet  rs = null;
+        ResultSet rs = null;
         try {
             // 注册获得连接 getconnection
             conn = JDBCUtils.getConnection();
-            System.out.println("creating statement...");
+            System.out.println(Thread.currentThread().getName() + ": creating statement...");
             stmt = conn.createStatement();
         } catch (SQLException e) {
-            code  = 1;
+            code = 1;
             msg = "there are some problems with the driver.";
         }
 
         //执行sql，获取结果集
         try {
             rs = stmt.executeQuery(sql);
+            System.out.println(Thread.currentThread().getName() + " executed statement...");
         } catch (SQLException e) {
             msg = "";
             //只取错误信息的后面一段,把冒号分割的第一段省略

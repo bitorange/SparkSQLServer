@@ -32,7 +32,7 @@ public class AccountCheck {
         Boolean flag =false;
         try {
             while(rs.next()){
-                if(username .equals(rs.getString("username")) && password.equals(rs.getString("password"))) {
+                if(username.equals(rs.getString("username")) && password.equals(rs.getString("password"))) {
                     flag = true;
                     break;
                 }

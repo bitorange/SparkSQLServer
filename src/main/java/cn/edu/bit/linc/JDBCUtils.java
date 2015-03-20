@@ -13,21 +13,19 @@ import java.util.ResourceBundle;
  */
 public class JDBCUtils {
     /**
-     * 1、db驱动
-     * 2、jdbc连接
-     * 3、释放stmt
-     * 4、释放conn
-     * 5、释放resultset
-     *
-     * */
-
+     * 1、db 驱动
+     * 2、jdbc 连接
+     * 3、释放 stmt
+     * 4、释放 conn
+     * 5、释放 resultset
+    **/
     public static String driverClass;
     public static String url;
     public static String username;
     public static String password;
-    static Connection conn=null;
-    static  Statement stmt = null;
-    static ResultSet rs=null;
+    static Connection conn = null;
+    static Statement stmt = null;
+    static ResultSet rs = null;
 
     static{
         driverClass = ResourceBundle.getBundle("db").getString("driverClass");
@@ -36,14 +34,13 @@ public class JDBCUtils {
         password = ResourceBundle.getBundle("db").getString("password");
     }
 
-
     /**
      * register the driver
      *
      * */
     public static void loadDriver() {
         try {
-            System.out.println("registering driver");
+            System.out.println(Thread.currentThread().getName() + ": registering driver");
             Class.forName(driverClass);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -56,16 +53,18 @@ public class JDBCUtils {
      * get the connection object
      * @return connection object
      * */
-        public static Connection getConnection(){
+    public static Connection getConnection(){
         loadDriver();
-        Connection conn = null;
+        // Connection conn = null;
         try {
-            System.out.println("getting connection");
-            conn = DriverManager.getConnection(url, username, password);
+            if(conn == null) {
+                System.out.println(Thread.currentThread().getName() + ": getting connection");
+                conn = DriverManager.getConnection(url, username, password);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-            return conn;
+        return conn;
     }
 
 
@@ -75,16 +74,16 @@ public class JDBCUtils {
      */
 
     public static void stmtRelease(Statement stmt ){
-        if(stmt!=null)
-            try{
+        if(stmt!=null) {
+            try {
                 stmt.close();
                 System.out.println("released stmt");
-            }
-            catch(SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 stmt = null;
             }
+        }
     }
 
     /**
@@ -92,16 +91,16 @@ public class JDBCUtils {
      * @param conn  conn is the connection object
      * */
     public static void connRelease(Connection conn ){
-        if(conn!=null)
-            try{
+        if(conn!=null) {
+            try {
                 conn.close();
                 System.out.println("released connection");
-            }
-            catch(SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 conn = null;
             }
+        }
     }
 
     /**
@@ -125,8 +124,8 @@ public class JDBCUtils {
      * release all connection including rs, stmt, conn.
      * */
     public static void releaseAll(){
-        rsRelease(rs);
-        stmtRelease(stmt);
-        connRelease(conn);
+        // rsRelease(rs);
+        // stmtRelease(stmt);
+        // connRelease(conn);
     }
 }
