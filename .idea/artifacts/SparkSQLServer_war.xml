@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SparkSQLServer:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="SparkSQLServer.war">
+      <element id="artifact" artifact-name="SparkSQLServer:war exploded" />
+    </root>
+  </artifact>
+</component>

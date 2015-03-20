@@ -1,0 +1,52 @@
+package cn.edu.bit.linc;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+/**
+ * this class will check the username and password .
+ * @author xwc
+ * @version v1
+ * Created by admin on 2015/3/18.
+ */
+public class AccountCheck {
+
+    public static String checkAccount(String username,String password){
+        String result="";
+
+        //先判断用户名密码错误情况
+        if(username=="" || password=="" ){
+         System.out.println("please enter valid username or password");
+         return "请输入有效账号与密码";
+        }
+
+        //如果用户名密码格式正确，则扫描判断。
+        String checkSql = "select username,password from user";
+
+        //执行SQL语句
+        ResultSet rs = ConnectJDBC.getAndExucuteSQL(checkSql);
+
+        //设置标签flag，默认不存在（false）
+        Boolean flag =false;
+        try {
+            while(rs.next()){
+                if(username .equals(rs.getString("username")) && password.equals(rs.getString("password"))) {
+                    flag = true;
+                    break;
+                }
+            }
+            //根据flag判断
+            if(flag == true)
+                result="登入成功";
+            else
+                result = "账号不存在";
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally{
+            JDBCUtils.releaseAll();
+        }
+        return result;
+    }
+}
