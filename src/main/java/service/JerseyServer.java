@@ -11,6 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.ResultSet;
 
 @Path("/service")
@@ -26,6 +28,13 @@ public class JerseyServer {
     @GET
     @Path("/{sql}")
     public Response helloWorld(@PathParam("sql") String sqlstring) {
+        try {
+            sqlstring=URLDecoder.decode(sqlstring,"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(sqlstring);
+
         String response=null;
         try {
             if (rpcCon == null) {
@@ -60,6 +69,8 @@ public class JerseyServer {
             if (rpcCon == null) {
                 rpcCon = new RPCConnection();
             }
+
+            System.out.println(checkString);
             // 调用插入队列的函数
             response = rpcCon.call(checkString);
         }catch (Exception e){
