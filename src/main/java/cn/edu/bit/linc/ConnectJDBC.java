@@ -1,11 +1,13 @@
 package cn.edu.bit.linc;
 
-import org.apache.avro.data.Json;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import cn.edu.bit.linc.FieldConverter.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * this class is used to connect the jdbc and execute SQL command.
@@ -14,37 +16,33 @@ import java.sql.*;
  * Created by admin on 2015/3/16.
  */
 public class ConnectJDBC {
-
-
-     private String msg;
-     private int code;
+    private String msg;
+    private int code;
 
     /**
      * the method include register driver,get connection and execute sql, then return resultset
      *@param sql
      *@return resultset the Resultset of execute sql command
      **/
-    public  ResultSet getAndExucuteSQL(String sql){
-        Connection conn = null;
+    public ResultSet getAndExucuteSQL(String sql){
+        Connection conn;
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            // 注册获得连接 getconnection
+            // 注册获得连接 getConnection
             conn = JDBCUtils.getConnection();
-            System.out.println(Thread.currentThread().getName() + ": creating statement...");
             stmt = conn.createStatement();
         } catch (SQLException e) {
             code = 1;
-            msg = "there are some problems with the driver.";
+            msg = "There are some problems with the driver.";
         }
 
-        //执行sql，获取结果集
+        // 执行 SQL，获取结果集
         try {
             rs = stmt.executeQuery(sql);
-            System.out.println(Thread.currentThread().getName() + " executed statement...");
         } catch (SQLException e) {
+            // 只取错误信息的后面一段,把冒号分割的第一段省略
             msg = "";
-            //只取错误信息的后面一段,把冒号分割的第一段省略
             String msgArray[] = e.getMessage().split(":");
             for(int i = 1; i <= msgArray.length - 1; i++){
                 msg += msgArray[i];
@@ -63,29 +61,29 @@ public class ConnectJDBC {
      * @return JSONArray
      * */
     public  JSONObject transformToJsonArray(ResultSet rs) throws JSONException {
-
-        //建立jsonArray数组封装所有的resultset信息
+        // 建立 jsonArray 数组封装所有的 ResultSet 信息
         JSONArray array = new JSONArray();
-        /*  //wholeArray封装所有包含时间，大小，返回码，返回信息的Json
-        JSONArray wholeArray = null;*/
+
         JSONObject wholeJsonObj = null;
         ResultSetMetaData metaData = null;
         if(rs !=null) {
             try {
-                //定义列数
+                // 定义列数
                 int columnCount = 0;
-                //获取列数
+
+                // 获取列数
                 metaData = rs.getMetaData();
                 columnCount = metaData.getColumnCount();
 
-                //遍历每条数据
+                // 遍历每条数据
                 while (rs.next()) {
-                    //创建json存放resultset
+                    // 创建 json 存放 ResultSet
                     JSONObject jsonObj = new JSONObject();
+
                     // 遍历每一列
                     for (int i = 1; i <= columnCount; i++) {
                         String columnName = metaData.getColumnLabel(i);
-                        //获得columnName对应的值
+                        // 获得 columnName 对应的值
                         String value = rs.getString(columnName);
                         jsonObj.put(columnName, value);
                     }
@@ -95,15 +93,59 @@ public class ConnectJDBC {
                 e.printStackTrace();
             }
         }
-        //wholeJsonObj用于存放最终返回数据
+
+        // wholeJsonObj 用于存放最终返回数据
         wholeJsonObj = new  JSONObject();
-        //code为0则正常输出，为10000则异常输出
-        if(code == 1)
-            wholeJsonObj.put("code",code).put("msg",msg);
-            //这里将result,time,code,msg,size数据封装进wholeArray
-        else
+
+        // code为 0 则正常输出，为 1 则异常输出
+        if(code == 1) {
+            wholeJsonObj.put("code", code).put("msg", msg);
+        }
+        else {
             msg = "success";
-        wholeJsonObj.put("result", array).put("time","20s").put("size","2M").put("code",code).put("msg",msg);
+        }
+
+        // 将 result, time, code, msg, size 数据封装进 wholeArray
+        wholeJsonObj.put("result", array).put("time", "N/Aih").put("size", "N/A").put("code", code).put("msg", msg);
         return wholeJsonObj;
+    }
+
+
+    public JSONObject convertArrayListToJsonOjbect(ArrayList<HashMap<String, String>> resultList){
+        JSONArray jsonArray = new JSONArray();
+        for(HashMap<String, String> dataRow: resultList){
+            JSONObject jsonObj = new JSONObject();
+            for(String columnName: dataRow.keySet()){
+                String value = (dataRow.get(columnName) == null ? "" : dataRow.get(columnName)).toString();
+                try {
+                    jsonObj.put(columnName, value);
+                } catch (JSONException e) {
+                    System.err.println("Err: 字段转换成 JSON 数据失败");
+                    return null;
+                }
+            }
+            jsonArray.put(jsonObj);
+        }
+
+        // Add field into JSON data
+        JSONObject finalJsonObject = new JSONObject();
+        if(code == 1) {
+            try {
+                finalJsonObject.put("code", code).put("msg", msg);
+            } catch (JSONException e) {
+                System.err.println("Err: 字段转换成 JSON 数据失败");
+                return null;
+            }
+        }
+        else {
+            msg = "success";
+        }
+        try {
+            finalJsonObject.put("result", jsonArray).put("time", "N/A").put("size", "N/A").put("code", code).put("msg", msg);
+        } catch (JSONException e) {
+            System.err.println("Err: 构造 JSONObject 失败");
+            return null;
+        }
+        return finalJsonObject;
     }
 }
