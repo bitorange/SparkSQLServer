@@ -5,14 +5,13 @@ package service;
  */
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import cn.edu.bit.linc.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
+
 import java.sql.ResultSet;
 
 @Path("/service")
@@ -25,15 +24,16 @@ public class JerseyServer {
      * @param     sqlstring  传入的SQL语句
      * @return    返回SQL语句查询的结果
      */
-    @GET
-    @Path("/{sql}")
-    public Response helloWorld(@PathParam("sql") String sqlstring) {
-        try {
-            sqlstring=URLDecoder.decode(sqlstring,"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(sqlstring);
+    @POST
+//    @Path("/{sql}") @PathParam("sql")
+    public Response helloWorld(String sqlstring) {
+//        System.out.println(sqlstring);
+//        try {
+//            sqlstring=URLDecoder.decode(sqlstring,"utf-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(sqlstring);
 
         String response=null;
         try {
