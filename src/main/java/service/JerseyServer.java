@@ -5,15 +5,8 @@ package service;
  */
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import cn.edu.bit.linc.*;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.sql.ResultSet;
 
 @Path("/service")
 public class JerseyServer {

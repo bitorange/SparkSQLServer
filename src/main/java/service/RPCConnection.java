@@ -23,9 +23,9 @@ public class RPCConnection {
     private String requestQueueName = "rpc_queue";
     private String replyQueueName;
     private QueueingConsumer consumer;
-    private final String conHost="10.4.21.103";
-    private final String conUsername="wucheng";
-    private final String conPassword="123456";
+    private final String conHost="localhost";
+    private final String conUsername="guest";
+    private final String conPassword="guest";
 
     public RPCConnection() throws Exception {
 
