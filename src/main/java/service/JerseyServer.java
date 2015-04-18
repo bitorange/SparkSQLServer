@@ -5,8 +5,6 @@ package service;
  */
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 
 @Path("/service")
 public class JerseyServer {
@@ -19,15 +17,8 @@ public class JerseyServer {
      * @return    返回SQL语句查询的结果
      */
     @GET
-    @Path("/{sql}")
-    public Response helloWorld(@PathParam("sql") String sqlstring) {
-        try {
-            sqlstring=URLDecoder.decode(sqlstring,"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        System.out.println(sqlstring);
-
+    @Path("/sqlExecute")
+    public Response sqlExecute(@QueryParam("sql") String sqlstring) {
         String response=null;
         try {
             if (rpcCon == null) {
@@ -54,7 +45,7 @@ public class JerseyServer {
     @Path("/check")
     @Produces("application/json")
     public Response check(@QueryParam("name") String name,
-                          @DefaultValue("26") @QueryParam("password") String password) {
+                          @QueryParam("password") String password) {
         //获取name和password
         String checkString="{\"name\":\""+name+"\", \"password\":\""+password+"\", \"service\":\"check\"}";//密码校验
         String response = null;
