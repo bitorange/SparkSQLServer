@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<property>
+		<entry key="rpc.server">localhost</entry>
+		<entry key="rpc.username">guest</entry>
+		<entry key="rpc.password">guest</entry>
+</property>

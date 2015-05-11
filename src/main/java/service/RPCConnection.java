@@ -9,7 +9,6 @@ import java.util.UUID;
  * 本类用于建立到 RPCServer 端的连接
  */
 public class RPCConnection {
-
     private Connection connection;
     private Channel channel;
     private String replyQueueName;
@@ -17,11 +16,17 @@ public class RPCConnection {
 
     // TODO: 从配置文件中读取
     private String requestQueueName = "rpc_queue";
-    private final String conHost = "localhost";
-    private final String conUsername = "guest";
-    private final String conPassword = "guest";
+    private String conHost = "localhost";
+    private String conUsername = "guest";
+    private String conPassword = "guest";
 
     public RPCConnection() throws Exception {
+        // 读取配置文件
+        GlobalVar.readConFile();
+        this.conHost = GlobalVar.configMap.get("rpc.server");
+        this.conUsername = GlobalVar.configMap.get("rpc.username");
+        this.conPassword = GlobalVar.configMap.get("rpc.password");
+
         // 初始化到 RPC 队列服务器的连接
         ConnectionFactory factory = new ConnectionFactory();
 

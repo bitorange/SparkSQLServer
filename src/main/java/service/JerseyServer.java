@@ -42,7 +42,7 @@ public class JerseyServer {
      * 校验用户名与密码，并返回结果
      *
      * @param password 即用户名
-     * @param name     即密码
+     * @param name     即密码us
      * @return 用户名与密码的验证结果
      */
     @GET
