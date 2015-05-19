@@ -68,7 +68,7 @@ public class RPCConnection {
             QueueingConsumer.Delivery delivery = consumer.nextDelivery(3000);
 
             if (delivery == null) {  //3秒之后无返回
-                response = "{\"code\":\"1\",\"msg\":\" Error: RPC服务器出现异常\"}";
+                response = "{\"code\":\"1\",\"msg\":\"RPC 队列服务器出现异常，连接超时\"}";
                 break;
             } else if (delivery.getProperties().getCorrelationId().equals(corrId)) {
                 response = new String(delivery.getBody(), "UTF-8");
