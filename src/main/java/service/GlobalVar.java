@@ -5,6 +5,8 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 /**
@@ -20,7 +22,8 @@ public class GlobalVar {
      */
     public static void readConFile() throws ConfigurationException {
         // TODO: 修改成当前目录
-        String filePath = "/Users/ihainan/tmp/sparkSQL/server.xml";
+        System.out.println();
+        String filePath = "server.xml";
         XMLConfiguration config = new XMLConfiguration(filePath);
         NodeList list = config.getDocument().getElementsByTagName("entry");
         for (int i = 0; i < list.getLength(); i++) {
