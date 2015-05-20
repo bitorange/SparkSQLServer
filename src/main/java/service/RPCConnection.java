@@ -13,8 +13,6 @@ public class RPCConnection {
     private Channel channel;
     private String replyQueueName;
     private QueueingConsumer consumer;
-
-    // TODO: 从配置文件中读取
     private String requestQueueName = "rpc_queue";
     private String conHost = "localhost";
     private String conUsername = "guest";
