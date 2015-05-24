@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <property>
-		<entry key="rpc.server">localhost</entry>
-		<entry key="rpc.username">guest</entry>
-		<entry key="rpc.password">guest</entry>
+    <!-- RabbitMQ Server 地址 -->
+    <entry key="rpc.server">localhost</entry>
+
+    <!-- RabbitMQ Server 用户名，仅当 RabbitMQ Server 在本地时能够使用 Guest 用户 -->
+    <entry key="rpc.username">guest</entry>
+
+    <!-- RabbitMQ Server 密码 -->
+    <entry key="rpc.password">guest</entry>
 </property>
