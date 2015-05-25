@@ -17,6 +17,7 @@ public class RPCConnection {
     private String conHost = "localhost";
     private String conUsername = "guest";
     private String conPassword = "guest";
+    private int timeout = -1;
 
     public RPCConnection() throws Exception {
         // 读取配置文件
@@ -24,6 +25,7 @@ public class RPCConnection {
         this.conHost = GlobalVar.configMap.get("rpc.server");
         this.conUsername = GlobalVar.configMap.get("rpc.username");
         this.conPassword = GlobalVar.configMap.get("rpc.password");
+        this.timeout = Integer.valueOf(GlobalVar.configMap.get("rpc.timeout"));
 
         // 初始化到 RPC 队列服务器的连接
         ConnectionFactory factory = new ConnectionFactory();
@@ -62,11 +64,11 @@ public class RPCConnection {
 
         // 客户端对RPC的超时处理
         while (true) {
-            // 阻塞监听replyQueueName队列,3s之后无响应即超时
-            QueueingConsumer.Delivery delivery = consumer.nextDelivery(3000);
+            // 阻塞监听replyQueueName队列, 特定时间之后无响应即超时
+            QueueingConsumer.Delivery delivery = consumer.nextDelivery(this.timeout);
 
             if (delivery == null) {  //3秒之后无返回
-                response = "{\"code\":\"1\",\"msg\":\"RPC 队列服务器出现异常，连接超时\"}";
+                response = "{\"code\":\"1\", \"msg\":\"RPC 队列服务器出现异常，连接超时\"}";
                 break;
             } else if (delivery.getProperties().getCorrelationId().equals(corrId)) {
                 response = new String(delivery.getBody(), "UTF-8");

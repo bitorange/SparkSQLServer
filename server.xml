@@ -8,4 +8,7 @@
 
     <!-- RabbitMQ Server 密码 -->
     <entry key="rpc.password">guest</entry>
+
+    <!-- RabbitMQ Server 连接超时最大时长，ms 为单位 -->
+    <entry key="rpc.timeout">10000</entry>
 </property>
